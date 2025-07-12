@@ -1,0 +1,29 @@
+	apiVersion: v1
+kind: Pod
+metadata:
+  name: gitpod
+spec:
+  volumes:
+  - name: git-vol
+    emptyDir: {}
+	initContainers:
+  - name: git-clone
+    image: alpine/git
+    command:
+      - git
+      - clone
+      - --branch
+      - main
+      - https://github.com/rajputganesh217/docker-3-tier.git
+      - /git-data
+    volumeMounts:
+    - name: git-vol
+      mountPath: /git-data
+	containers:
+  - name: web
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: git-vol
+      mountPath: /usr/share/nginx/html
