@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gitpod-private
+spec:
+  volumes:
+    - name: git-vol
+      emptyDir: {}
+  initContainers:
+    - name: git-clone
+      image: alpine/git
+      env:
+        - name: GIT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: git-credentials
+              key: username
+        - name: GIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: git-credentials
+              key: password
+      command:
+        - /bin/sh
+        - -c
+        - |
+          git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/your-org/private-repo.git /git-data
+      volumeMounts:
+        - name: git-vol
+          mountPath: /git-data
+  containers:
+    - name: web
+      image: nginx
+      volumeMounts:
+        - name: git-vol
+          mountPath: /usr/share/nginx/html
