@@ -138,7 +138,7 @@ kubectl apply -f pvchostpod.yml
 ## 📌 Author
 
 👨‍💻 Made by: Ganesh Rajput
-📅 MCA Kubernetes Practical Collection – 2025
+ Kubernetes hands on  Collection – 2025
 
 ---
 
